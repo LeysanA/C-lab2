@@ -1,0 +1,54 @@
+#include <string>
+#include <iostream>
+#include <vector>
+using namespace std;
+void Show_tasks(int day, const vector<vector<string>>& tsks) {
+	cout << tsks[day - 1].size();
+	for (auto i : tsks[day - 1]) {
+		cout << " " << i << "\n";
+	}
+}
+void Next_month(int& indx, const vector<int>& dim, vector<vector<string>>& tsks) {
+	indx++;
+	if (indx > 11)indx = 0;
+	vector<vector<string>> NewMonth = tsks;
+	int a = tsks.size();
+	int b = dim[indx];
+	tsks.resize(b);
+	const int e = b - 1;
+	if (a > b) {
+		for (b; a > b; b++) {
+			tsks[e].insert(end(tsks[e]), begin(NewMonth[b]), end(NewMonth[b]));
+		}
+	}
+	NewMonth.clear();
+}
+
+int main()
+{
+	int q;
+	cin >> q;
+	vector<int> days_in_month = { 31,28,31,30,31,30,31,31,30,31,30,31 };
+	vector<vector<string>> tasks;
+	int index_of_month = 0;
+	tasks.resize(days_in_month[index_of_month], {});
+	for (int i = 0; q > i; i++) {
+		string c;
+		int d;
+		string t;
+		cin >> c;
+		if (c == "NEXT") {
+			Next_month(index_of_month, days_in_month, tasks);
+		}
+		else if (c == "DUMP") {
+			cin >> d;
+			Show_tasks(d, tasks);
+		}
+		else if (c == "ADD") {
+			cin >> d >> t;
+			tasks[d - 1].push_back(t);
+		}
+	}
+	return 0;
+}
+
